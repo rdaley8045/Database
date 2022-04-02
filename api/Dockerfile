@@ -1,19 +1,11 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7 as local
-COPY --from=base /usr/src/app/. /usr/src/app/.
-RUN  pip install --no-cache-dir -r /usr/src/app/requirements.txt
+FROM python:3.9 as local
+
+WORKDIR /usr/src/app/api
+
+COPY requirements.txt .
+
+RUN  pip3 install --no-cache-dir -r /usr/src/app/api/requirements.txt
 ENV PYTHONPATH "${PYTHONPATH}:/usr/src/app:/usr/src/app/api"
-WORKDIR /usr/src/app/api
-ENTRYPOINT uvicorn database:app --reload --port 5000 --host 0.0.0.0
 
-ARG BUILD=dev
-FROM local as dev
-WORKDIR /usr/src/app/api
-COPY . .
-ENV PORT=5000
-ENV VERSION=$BUILD
-ENV CONFIG=prom.dev.json
-ENTRYPOINT gunicorn -k uvicorn.workers.UvicornWorker -w 4 GWEX2:app
+ENTRYPOINT uvicorn mysql:app --reload --port 80 --host 0.0.0.0
 
-ARG BUILD=prod
-FROM dev as prod
-ENV CONFIG=prom.prod.json
