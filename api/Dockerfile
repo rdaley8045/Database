@@ -7,5 +7,4 @@ COPY requirements.txt .
 RUN  pip3 install --no-cache-dir -r /usr/src/app/api/requirements.txt
 ENV PYTHONPATH "${PYTHONPATH}:/usr/src/app:/usr/src/app/api"
 
-ENTRYPOINT uvicorn mysql:app --reload --port 80 --host 0.0.0.0
-
+CMD ["uvicorn", "api.main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
