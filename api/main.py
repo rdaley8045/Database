@@ -1,14 +1,11 @@
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from config import Settings
-from api.routers import queues
+import psycopg2
 
-settings = Settings()
+prom = psycopg2.connect(dbname='database', user='fsmuser', host='db',
+                                     password='HelpMe', port=5432)
 
-app = FastAPI(title='GWEX2',
-              root_path=settings.root_path,
-              version=settings.version)
+app = FastAPI()
 
 origins = [
     'http://localhost:3000'
@@ -23,9 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# add routes
-app.include_router(queues.router)
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
-if __name__ == "__main__":
-    uvicorn.run("api.main:app", host="0.0.0.0", port=5000, reload=True)
