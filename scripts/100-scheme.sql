@@ -1,8 +1,7 @@
 CREATE TABLE aircraft
 (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE,
-    image VARCHAR(1024)
+    id INT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE squadron
@@ -16,15 +15,14 @@ CREATE TABLE grade
 (
     id SERIAL PRIMARY KEY,
     position VARCHAR(100) UNIQUE,
-    description TEXT,
-    image VARCHAR(1024)
+    description TEXT
 );
 
 
-CREATE TABLE rooster
+CREATE TABLE roster
 (
     callsign VARCHAR(40) PRIMARY KEY,
-    squadronId INT REFERENCES squadron(id),
+    squadronid INT REFERENCES squadron(id),
     rankId INT REFERENCES grade(id),
     flightLead BOOLEAN,
     commander BOOLEAN,
@@ -36,7 +34,8 @@ CREATE TABLE rooster
 
 CREATE TABLE login
 (
-    callsign VARCHAR(40)  PRIMARY KEY REFERENCES rooster(callsign),
+    id INT PRIMARY KEY,
+    callsign VARCHAR(40)  REFERENCES roster(callsign),
     email    VARCHAR(200) UNIQUE,
     password VARCHAR(128)
 );
@@ -50,16 +49,16 @@ CREATE TABLE map
 
 CREATE TABLE mission
 (
-    data DATE,
     name VARCHAR(200) PRIMARY KEY UNIQUE,
-    createdTime DATE,
+    createdDate DATE,
     mapId INT REFERENCES map(id),
     description TEXT
 );
 
 CREATE TABLE flightlog
 (
-    callsign VARCHAR(40) PRIMARY KEY REFERENCES rooster(callsign),
+    id INT PRIMARY KEY,
+    callsign VARCHAR(40)  REFERENCES roster(callsign),
     aircraftId INT REFERENCES aircraft(id),
     takeoffDate DATE,
     takeoffTime TIME,
@@ -91,9 +90,9 @@ INSERT INTO grade (id, position) VALUES (13, 'O-7');
 INSERT INTO grade (id, position) VALUES (14, 'O-8');
 INSERT INTO grade (id, position) VALUES (15, 'O-9');
 
-INSERT INTO rooster VALUES ('Teapot', 1, 9,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE);
-INSERT INTO rooster VALUES ('Wezal', 1, 10,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE);
+INSERT INTO roster VALUES ('Teapot', 1, 9,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE);
+INSERT INTO roster VALUES ('Wezal', 1, 10,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE);
 
-INSERT INTO login VALUES ('Teapot', 'teapot@gmail.com', 'password');
-INSERT INTO login VALUES ('Wezal', 'wezal@gmail.com', 'password');
+INSERT INTO login VALUES (1,'Teapot', 'teapot@gmail.com', 'password');
+INSERT INTO login VALUES (2,'Wezal', 'wezal@gmail.com', 'password');
 
