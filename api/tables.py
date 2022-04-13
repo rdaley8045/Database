@@ -23,7 +23,7 @@ class Squadron(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    aircraftID = Column(Integer, ForeignKey('aircraft.id'))
+    aircraftid = Column(Integer, ForeignKey('aircraft.id'))
 
 
 class Grade(Base):
@@ -45,38 +45,28 @@ class Roster(Base):
     executive = Column(Boolean, default=False)
     admin = Column(Boolean, default=False)
     moderator = Column(Boolean, default=False)
-    flightInstructor = Column(Boolean, default=False)
-
-
-class Login(Base):
-    __tablename__ = "login"
-
-    id = Column(Integer, primary_key=True, index=True)
-    callsign = Column(String, ForeignKey('roster.callsign'))
-    email = Column(String)
-    password = Column(String)
-
+    flightinstructor = Column(Boolean, default=False)
 
 class Mission(Base):
     __tablename__ = "mission"
 
     name = Column(String, primary_key=True, index=True)
-    createdDate = Column(Date)
-    mapId = Column(Integer, ForeignKey('map.id'))
+    createddate = Column(Date)
+    mapid = Column(Integer, ForeignKey('map.id'))
     description = Column(String)
-
 
 
 class FlightLog(Base):
     __tablename__ = "flightlog"
 
     id = Column(Integer, primary_key=True, index=True)
-    callsign = Column(String, ForeignKey('roster.callsign') )
-    aircraftID = Column(Integer, ForeignKey('aircraft.id'))
-    takeoffDate = Column(Date)
-    takeoffTime = Column(Time)
-    landingTime = Column(Time)
-    landingData = Column(Date)
+    callsign = Column(String, ForeignKey('roster.callsign'))
+    aircraftid = Column(Integer, ForeignKey(Aircraft.id))
+    squadronid = Column(Integer, ForeignKey('squadron.id'))
+    takeoffdate = Column(Date)
+    takeofftime = Column(Time)
+    landingtime = Column(Time)
+    landingdata = Column(Date)
     aakills = Column(Integer)
     agkills = Column(Integer)
-    mapId = Column(Integer, ForeignKey('map.id'))
+    missionname = Column(String, ForeignKey('mission.name'))

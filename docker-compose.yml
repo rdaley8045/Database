@@ -36,6 +36,8 @@ services:
       - VERSION=compose
     volumes:
       - ./api:/usr/src/app/api
+    depends_on:
+      - database-data
     networks:
       - apioverlay
 
