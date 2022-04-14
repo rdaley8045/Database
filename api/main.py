@@ -133,7 +133,7 @@ def AddPlayer(callsign: str, sqID: int, rank: int, flight: bool, comm: bool, exo
 
 
 # update Roster with new squadron assignments.
-@app.put("/removePlayer/{callsign}", name="Remove player")
+@app.delete("/removePlayer/{callsign}", name="Remove player")
 def RemovePlayer(callsign: str, db: Session = Depends(get_db)):
     crud.removePlayer(callsign, db)
 

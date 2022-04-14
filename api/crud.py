@@ -91,7 +91,8 @@ def addAircraft(id, name, db):
 
 
 def removePlayer(callsign, db):
-    return None
+    db.query(Roster).filter(Roster.callsign == callsign).delete()
+    return db.commit()
 
 
 def updatePlayer(callsign, sqID, rank, flight, comm, exo, admin, mod, instructor, db):
