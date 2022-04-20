@@ -51,8 +51,8 @@ class Callsign(BaseModel):
 
 
 class Map(BaseModel):
-    id: int
-    name: str
+    id: int = 0
+    name: str = ''
 
     class Config:
         orm_mode = True
@@ -76,9 +76,8 @@ class AC(BaseModel):
 
 
 class Rank(BaseModel):
-    id: int
-    position: str
-    description: str
+    id: int = 0
+    position: str = ''
 
     class Config:
         orm_mode = True
@@ -88,7 +87,7 @@ class Miss(BaseModel):
     name: str
     description: str
     createddate: datetime.date
-    mapId: int
+    mapid: int
 
     class Config:
         orm_mode = True

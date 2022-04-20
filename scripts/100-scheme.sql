@@ -14,8 +14,7 @@ CREATE TABLE squadron
 CREATE TABLE grade
 (
     id SERIAL PRIMARY KEY,
-    position VARCHAR(100) UNIQUE,
-    description TEXT
+    position VARCHAR(100) UNIQUE
 );
 
 

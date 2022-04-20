@@ -42,13 +42,13 @@ def getIndividualsSelectPermissionsPerSquadron(squadron, admin, moderator, db):
 
 
 def createMission(name, createDate, mapId, description, db):
-    stmt = Mission(name=name, createdate=createDate, mapid=mapId, description=description)
+    stmt = Mission(name=name, createddate=createDate, mapid=mapId, description=description)
     db.add(stmt)
     return db.commit()
 
 
 def getMaps(db):
-    return db.query(Map.id, Map.name)
+    return db.query(Map.id, Map.name).all()
 
 
 def addFlightLog(id, callsign, acId, sqId, offDate, offTime, landDate, landTime, aa, ag, mission, db):
@@ -81,17 +81,12 @@ def addPlayer(callsign, sqID, rank, flight, comm, exo, admin, mod, instructor, d
 
 
 def getRank(db):
-    return db.query(Grade.id, Grade.position, Grade.description).all()
+    return db.query(Grade.id, Grade.position).all()
 
 
 def addAircraft(id, name, db):
     stmt = Aircraft(id=id, name=name)
     db.add(stmt)
-    return db.commit()
-
-
-def removePlayer(callsign, db):
-    db.query(Roster).filter(Roster.callsign == callsign).delete()
     return db.commit()
 
 
@@ -110,4 +105,4 @@ def updatePlayer(callsign, sqID, rank, flight, comm, exo, admin, mod, instructor
 
 
 def getMissions(db):
-    return db.query(Mission.name, Mission.description, Mission.createddate, Mission.mapId).all()
+    return db.query(Mission.name, Mission.description, Mission.createddate, Mission.mapid).all()

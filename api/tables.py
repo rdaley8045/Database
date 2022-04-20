@@ -7,7 +7,7 @@ from database import Base
 class Map(Base):
     __tablename__ = "map"
 
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
 
 
@@ -31,7 +31,6 @@ class Grade(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     position = Column(String, index=True)
-    description = Column(String)
 
 
 class Roster(Base):
@@ -46,6 +45,7 @@ class Roster(Base):
     admin = Column(Boolean, default=False)
     moderator = Column(Boolean, default=False)
     flightinstructor = Column(Boolean, default=False)
+
 
 class Mission(Base):
     __tablename__ = "mission"

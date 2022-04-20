@@ -126,14 +126,14 @@ def Rank(db: Session = Depends(get_db)):
 
 
 # Enter new map
-@app.put("/addMap/{name}", name="Add new map")
-def AddMap(name: str, db: Session = Depends(get_db)):
-    crud.addMap(name, db)
+@app.put("/addMap/{id}/{name}", name="Add new map")
+def AddMap(id:int, name: str, db: Session = Depends(get_db)):
+    crud.addMap(id, name, db)
 
 
-@app.put("/addAircraft/{name}", name="Add new Aircraft")
-def AddAircraft(name: str, db: Session = Depends(get_db)):
-    crud.addAircraft(name, db)
+@app.put("/addAircraft/{id}/{name}", name="Add new Aircraft")
+def AddAircraft(id:int, name: str, db: Session = Depends(get_db)):
+    crud.addAircraft(id,name, db)
 
 
 # enter in new individual
@@ -143,12 +143,6 @@ def AddPlayer(callsign: str, sqID: int, rank: int, flight: bool, comm: bool, exo
               instructor: bool,
               db: Session = Depends(get_db)):
     crud.addPlayer(callsign, sqID, rank, flight, comm, exo, admin, mod, instructor, db)
-
-
-# update Roster with new squadron assignments.
-@app.delete("/removePlayer/{callsign}", name="Remove player")
-def RemovePlayer(callsign: str, db: Session = Depends(get_db)):
-    crud.removePlayer(callsign, db)
 
 
 @app.put("/updatePlayer/{callsign}/{sqID}/{rank}/{flight}/{comm}/{exo}/{admin}/{mod}/{instructor}",
