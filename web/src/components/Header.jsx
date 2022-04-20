@@ -33,9 +33,9 @@ const Header = () => {
                         size='small'
                         color='primary'
                         onClick={() => {
-                            navigate('/roster')
+                            navigate('/aircraft')
                         }}>
-                        Roster
+                        Aircraft
                     </Button>
                     <Button
                         style={{fontSize: '16px', color: '#ffffff'}}
@@ -43,9 +43,19 @@ const Header = () => {
                         size='small'
                         color='primary'
                         onClick={() => {
-                            navigate('/roster')
+                            navigate('/squadron')
                         }}>
-                        Roster
+                        Squadron
+                    </Button>
+                    <Button
+                        style={{fontSize: '16px', color: '#ffffff'}}
+                        variant='outlined'
+                        size='small'
+                        color='primary'
+                        onClick={() => {
+                            navigate('/mission')
+                        }}>
+                        Mission
                     </Button>
                 </Toolbar>
             </AppBar>

@@ -1,10 +1,13 @@
 from datetime import date, time
+from typing import List
 
 from fastapi import Depends, FastAPI, Request, Response
 from sqlalchemy.orm import Session
+from starlette.middleware.cors import CORSMiddleware
 
 import crud
 import tables
+from api.model import IndividualsInSquadron, SquadronLogs, IndividualLog, Callsign, Map, Squad, AC, Rank, Miss
 from database import SessionLocal, engine
 
 tables.Base.metadata.create_all(bind=engine)
@@ -12,8 +15,17 @@ tables.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://127.0.0.1:5000'
 ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.middleware("http")
@@ -32,24 +44,24 @@ def get_db(request: Request):
     return request.state.db
 
 
-@app.get("/individual/{squadron}", name="Get Individual in Squadron", )
+@app.get("/individual/{squadron}", name="Get Individual in Squadron", response_model=List[IndividualsInSquadron])
 def GetIndividualInSquadron(squadron: str, db: Session = Depends(get_db)):
     return crud.getIndividualsInSquadron(db, squadron)
 
 
-@app.get("/squadronLogs/{squadron}", name="Get Flight Logs for an entire squadron")
+@app.get("/squadronLogs/{squadron}", name="Get Flight Logs for an entire squadron",response_model=List[SquadronLogs])
 def GetSquadronLogs(squadron: str, db: Session = Depends(get_db)):
     return crud.getSqudronLogs(db, squadron)
 
 
-@app.get("/individualLogs/{callsign}", name="Get Flight Logs for individual pilots")
+@app.get("/individualLogs/{callsign}", name="Get Flight Logs for individual pilots", response_model=List[IndividualLog])
 def GetIndividualLogs(callsign: str, db: Session = Depends(get_db)):
     return crud.getIndividualLogs(db, callsign)
 
 
 # Individuals with select duty per squadron
 @app.get("/individualsDutiesPerSquadron/{squadron}/{flightlead}/{commander}/{exo}/{instructor}",
-         name="Get individuals with a select duty per Squadron")
+         name="Get individuals with a select duty per Squadron", response_model=List[Callsign])
 def GetIndividualDutiesPerSquadron(squadron: str, flightlead: bool, commander: bool, exo: bool,
                                    instructor: bool, db: Session = Depends(get_db)):
     return crud.getIndividualDutiesPerSquadron(db, squadron, flightlead, commander, exo, instructor)
@@ -57,21 +69,22 @@ def GetIndividualDutiesPerSquadron(squadron: str, flightlead: bool, commander: b
 
 # Indviduals with select duty all
 @app.get("/individualsSelectDuty/{flightlead}/{commander}/{exo}/{instructor}",
-         name="Get individuals with a select duty")
+         name="Get individuals with a select duty", response_model= List[Callsign])
 def GetIndividualsSelectDuty(flightlead: bool, commader: bool, exo: bool, instructor: bool, db: Session = Depends(
     get_db)):
     return crud.getIndividualsSelectDuty(db, flightlead, commader, exo, instructor)
 
 
 # Individuals with select permissions
-@app.get("/individualSelectPermissions/{admin}/{moderator}", name="Get Individual with permissions")
+@app.get("/individualSelectPermissions/{admin}/{moderator}", name="Get Individual with permissions",
+         response_model=List[Callsign])
 def GetIndividualSelectPermissions(admin: bool, moderator: bool, db: Session = Depends(get_db)):
     return crud.getIndividualSelectPermissions(db, admin, moderator)
 
 
 # Individuals with select permissions per squadron
 @app.get("/individualSelectPermissionsPerSquadron/{squadron}/{admin}/{moderator}",
-         name="Get Individuals a select squadron with a set permissions")
+         name="Get Individuals a select squadron with a set permissions", response_model=List[Callsign])
 def GetIndividaulsSelectPermissionsPerSquadron(squadron: str, admin: bool, moderator: bool,
                                                db: Session = Depends(get_db)):
     return crud.getIndividualsSelectPermissionsPerSquadron(squadron, admin, moderator, db)
@@ -84,7 +97,7 @@ def CreateMission(name: str, createDate: date, mapId: int, description: str, db:
 
 
 # get list of maps
-@app.get("/maps", name="Get list of Maps with ID")
+@app.get("/maps", name="Get list of Maps with ID", response_model=List[Map])
 def Maps(db: Session = Depends(get_db)):
     return crud.getMaps(db)
 
@@ -97,17 +110,17 @@ def AddFlightLog(id: int, callsign: str, acId: int, sqId: int, offDate: date, of
     return crud.addFlightLog(id, callsign, acId, sqId, offDate, offTime, landDate, landTime, aa, ag, mission, db)
 
 
-@app.get("/squadrons", name='Get list of Squadrons')
+@app.get("/squadrons", name='Get list of Squadrons', response_model=List[Squad])
 def Squadrons(db: Session = Depends(get_db)):
     return crud.getSquadrons(db)
 
 
-@app.get("/aircraft", name='Get list of Aircraft')
+@app.get("/aircraft", name='Get list of Aircraft', response_model=List[AC])
 def Aircraft(db: Session = Depends(get_db)):
     return crud.getAircraft(db)
 
 
-@app.get("/rank", name="Get list of Rank")
+@app.get("/rank", name="Get list of Rank", response_model=List[Rank])
 def Rank(db: Session = Depends(get_db)):
     return crud.getRank(db)
 
@@ -145,6 +158,7 @@ def UpdatePlayer(callsign: str, sqID: int, rank: int, flight: bool, comm: bool, 
                  db: Session = Depends(get_db)):
     crud.updatePlayer(callsign, sqID, rank, flight, comm, exo, admin, mod, instructor, db)
 
-@app.get("/getMission/", name="Get Missions")
+
+@app.get("/getMission/", name="Get Missions",response_model=List[Miss])
 def GetMissions(db: Session = Depends(get_db)):
     return crud.getMissions(db)

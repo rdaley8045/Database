@@ -9,32 +9,23 @@ import Header from "./components/Header";
 
 const Home =() =>{
 
-    let squadron = ''
+    let squadron = []
 
     useEffect(()=>{
-        fetch('http://localhost:5000/squadrons/')
+        fetch('http://localhost:5000/individual/484th')
             .then(resp => resp.json())
             .then(response => {
-                squadron = response.name;
+                console.log(response)
             })
     })
 
   return (
     <>
         <Header/>
-        <Toolbar>
-            <FormControl variant = 'filled'>
-                <InputLabel id='ver-lable'>Squadrons</InputLabel>
-                <Select
-                    labelId ="ver-lable"
-                    id = "squadron"
-                    value = {sqaudron}
-                    onChange={squadronSelect}
-                    ></Select>
 
 
-            </FormControl>
-        </Toolbar>
+
+            <p>This is a test</p>
     </>
   );
 };
