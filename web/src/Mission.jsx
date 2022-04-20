@@ -12,6 +12,7 @@ const Mission =() =>{
         <>
             <Header/>
             <h1>Mission</h1>
+            <h3>Maps </h3>
         </>
     );
 };

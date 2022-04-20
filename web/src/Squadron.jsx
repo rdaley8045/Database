@@ -15,6 +15,10 @@ const Squadron = () => {
         <>
             <Header/>
             <h1>Squadron</h1>
+            <h3> Select Duties</h3>
+            <h3>Squad Duties</h3>
+            <h3> Individual Permissions</h3>
+            <h3>Squadron Permissions</h3>
         </>
     );
 };
