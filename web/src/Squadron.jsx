@@ -1,6 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import Header from "./components/Header";
 
+function trueFalse(value){
+    if (value){
+        return "True"
+    }else{
+        return "False"
+    }
+}
 
 const Squadron = () => {
 
@@ -13,6 +20,7 @@ const Squadron = () => {
                 setSquadron(response)
             })
     }
+
 
     useEffect(() => {
         fetchSquadron();
@@ -40,7 +48,6 @@ const Squadron = () => {
                                 <td>{item.id}</td>
                                 <td>{item.name}</td>
                                 <td>{item.aircraftid}</td>
-                                <td/>
                             </tr>
                         ))
                     }
@@ -49,9 +56,10 @@ const Squadron = () => {
             </div>
 
             <h3> Select Duties</h3>
-            <h3>Squad Duties</h3>
-            <h3> Individual Permissions</h3>
-            <h3>Squadron Permissions</h3>
+            <form>
+
+            </form>
+            <h3>Individual Permissions</h3>
         </>
     );
 };
